@@ -18,9 +18,13 @@ const UserSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
+  phoneNo:{
+    type:Number,
+    required:true
+  },
   noOfRelative: {
     type: Number,
-    required: true
+    default:0
   }
 }, {
   timestamps: true
