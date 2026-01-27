@@ -13,19 +13,20 @@ import { AuthService } from '../services/auth.service';
 })
 export class LoginComponent {
   loginObj: any = {
-    username: '',
+    email: '',
     password: ''
   };
 
   constructor(private router: Router, private authService: AuthService) { }
 
   onLogin() {
-    if (this.loginObj.username && this.loginObj.password) {
+    if (this.loginObj.email && this.loginObj.password) {
       this.authService.login(this.loginObj).subscribe({
         next: (res: any) => {
           alert('Login Successful');
+          localStorage.setItem('token', res.token)
           console.log(res);
-          this.router.navigate(['/dashboard']); // Update this when dashboard exists
+          //   this.router.navigate(['/dashboard']); // Update this when dashboard exists
         },
         error: (err: any) => {
           alert('Login Failed: ' + (err.error?.message || 'Unknown error'));

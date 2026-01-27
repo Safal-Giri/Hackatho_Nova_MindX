@@ -14,7 +14,8 @@ import { AuthService } from '../services/auth.service';
 export class RegisterComponent {
   registerObj: any = {
     username: '',
-    age: '',
+    age: 0,
+    phoneNo: '',
     email: '',
     password: '',
     confirmPassword: ''
