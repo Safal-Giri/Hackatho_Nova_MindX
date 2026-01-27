@@ -1,1 +1,33 @@
-<p>dashboard works!</p>
+<div class="dashboard-container">
+  <!-- Sidebar -->
+  <nav class="sidebar">
+    <div class="logo">
+      <h2>DementiAid</h2>
+    </div>
+    <ul class="nav-links">
+      <li><a routerLink="overview" routerLinkActive="active">Overview</a></li>
+      <li><a routerLink="people" routerLinkActive="active">People</a></li>
+      <li><a routerLink="memories" routerLinkActive="active">Memories</a></li>
+      <li><a routerLink="activity-log" routerLinkActive="active">Activity Log</a></li>
+      <li><a routerLink="devices" routerLinkActive="active">Devices</a></li>
+      <li><a routerLink="settings" routerLinkActive="active">Settings</a></li>
+    </ul>
+    <div class="user-info">
+      <p>Patient: <strong>John Doe</strong></p>
+      <button class="logout-btn">Logout</button>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <header class="top-bar">
+      <h3>Dashboard</h3>
+      <div class="status-indicator">
+        <span class="status-dot"></span> System Active
+      </div>
+    </header>
+    <div class="content-area">
+      <router-outlet></router-outlet>
+    </div>
+  </main>
+</div>

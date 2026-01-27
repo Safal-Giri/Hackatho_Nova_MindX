@@ -1,0 +1,59 @@
+<div class="people-container">
+  <div class="header">
+    <h2>Manage People</h2>
+    <button class="add-btn" (click)="openAddModal()">+ Add New Person</button>
+  </div>
+
+  <div class="people-grid">
+    <div class="person-card" *ngFor="let person of people">
+      <div class="person-info">
+        <h3>{{ person.name }}</h3>
+        <p class="role">{{ person.relationship }}</p>
+        <div class="details">
+          <span>📅 {{ person.createdAt | date:'mediumDate' }}</span>
+          <span>🔄 {{ person.visitFrequency }}</span>
+        </div>
+        <div class="actions">
+          <button class="edit-btn">Edit</button>
+          <button class="delete-btn" (click)="deletePerson(person._id || '')">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Person Modal -->
+  <div class="modal" *ngIf="showAddModal">
+    <div class="modal-content large">
+      <span class="close" (click)="closeAddModal()">&times;</span>
+      <h3>Register New Person</h3>
+
+      <form (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" [(ngModel)]="newPerson.name" name="name" required placeholder="e.g. Maya Smith">
+        </div>
+
+        <div class="form-group">
+          <label>Relationship</label>
+          <input type="text" [(ngModel)]="newPerson.relationship" name="relationship" required
+            placeholder="e.g. Daughter">
+        </div>
+
+        <div class="form-group">
+          <label>Visit Frequency (Optional)</label>
+          <input type="text" [(ngModel)]="newPerson.visitFrequency" name="visitFrequency"
+            placeholder="e.g. Every Evening">
+        </div>
+
+        <!-- Camera Section -->
+        <div class="camera-section">
+          <video #video width="400" height="300" autoplay muted></video>
+          <canvas #canvas class="hidden"></canvas>
+        </div>
+
+        <button type="submit" class="submit-btn">Register Person</button>
+      </form>
+    </div>
+  </div>
+
+</div>

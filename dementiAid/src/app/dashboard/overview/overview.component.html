@@ -1,0 +1,74 @@
+<div class="overview-container">
+  <!-- Summary Cards -->
+  <div class="cards-grid">
+    <div class="card summary-card">
+      <div class="card-icon people-icon">👥</div>
+      <div class="card-info">
+        <h3>Registered People</h3>
+        <p class="count">{{ people.length }}</p>
+      </div>
+    </div>
+    <div class="card summary-card">
+      <div class="card-icon recognition-icon">👁️</div>
+      <div class="card-info">
+        <h3>Recognitions Today</h3>
+        <p class="count">{{ detectedFaces.length }}</p>
+      </div>
+    </div>
+    <div class="card summary-card">
+      <div class="card-icon unknown-icon">❓</div>
+      <div class="card-info">
+        <h3>Unknown Faces</h3>
+        <p class="count">0</p>
+      </div>
+    </div>
+    <div class="card summary-card">
+      <div class="card-icon time-icon">🕒</div>
+      <div class="card-info">
+        <h3>Last Activity</h3>
+        <p class="timestamp">{{ detectedFaces.length > 0 ? 'Now' : '--' }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Live Feed Section -->
+  <div class="live-feed-section">
+    <h2>Live Camera Feed</h2>
+    <div class="live-feed">
+      <video #video width="720" height="560" autoplay muted></video>
+      <canvas #canvas width="720" height="560"></canvas>
+    </div>
+  </div>
+
+  <!-- Detected Faces Info -->
+  <div class="detected-faces-container">
+    <h3 *ngIf="detectedFaces.length > 0">Currently Detected</h3>
+
+    <div *ngFor="let face of detectedFaces" class="detected-face-card">
+      <div class="face-header">
+        <h2>{{ face.label }}</h2>
+        <span class="relationship-badge">{{ face.relationship }}</span>
+      </div>
+
+      <div class="face-details">
+        <div class="detail-item">
+          <span class="icon">📅</span>
+          <span>Visits: {{ face.visitFrequency }}</span>
+        </div>
+
+        <div class="conversation-section" *ngIf="face.lastConversation && face.label !== 'unknown'">
+          <h4>💬 Last Conversation</h4>
+          <p class="conversation-text">{{ face.lastConversation }}</p>
+        </div>
+
+        <div class="no-conversation" *ngIf="!face.lastConversation && face.label !== 'unknown'">
+          <p class="muted">No previous conversations recorded</p>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="detectedFaces.length === 0" class="no-detections">
+      <p>👤 No faces detected. Please look at the camera.</p>
+    </div>
+  </div>
+</div>
