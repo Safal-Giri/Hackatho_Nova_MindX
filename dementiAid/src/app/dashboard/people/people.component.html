@@ -37,12 +37,10 @@
   </div>
 
   <!-- Add/Edit Person Modal -->
-  <div class="modal" *ngIf="showAddModal">
-    <div class="modal-content large">
-      <span class="close" (click)="closeAddModal()">&times;</span>
-      <div class="modal-header">
-        <h2>{{ isEditing ? 'Update Profile' : 'New Registration' }}</h2>
-      </div>
+  <div class="modal-overlay" *ngIf="showAddModal">
+    <div class="modal-box large">
+      <button class="modal-close" (click)="closeAddModal()">&times;</button>
+      <h2 class="modal-title">{{ isEditing ? 'Update Profile' : 'New Registration' }}</h2>
 
       <form (ngSubmit)="onSubmit()">
         <div class="form-group">

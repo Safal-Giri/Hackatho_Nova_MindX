@@ -12,7 +12,7 @@ import { MedicineService, Medicine } from '../../services/medicine.service';
 })
 export class MedicationsComponent implements OnInit {
   medicines: Medicine[] = [];
-  showModal = false;
+  showAddModal = false;
   isEditing = false;
   editingId: string | null = null;
 
@@ -42,18 +42,18 @@ export class MedicationsComponent implements OnInit {
     this.isEditing = false;
     this.editingId = null;
     this.resetForm();
-    this.showModal = true;
+    this.showAddModal = true;
   }
 
   openEditModal(med: Medicine) {
     this.isEditing = true;
     this.editingId = med._id!;
     this.newMed = { ...med };
-    this.showModal = true;
+    this.showAddModal = true;
   }
 
-  closeModal() {
-    this.showModal = false;
+  closeAddModal() {
+    this.showAddModal = false;
     this.resetForm();
   }
 
@@ -77,7 +77,7 @@ export class MedicationsComponent implements OnInit {
         next: () => {
           alert('Medicine updated successfully!');
           this.loadMedicines();
-          this.closeModal();
+          this.closeAddModal();
         },
         error: (err) => alert('Error updating medicine')
       });
@@ -86,7 +86,7 @@ export class MedicationsComponent implements OnInit {
         next: () => {
           alert('Medicine added successfully!');
           this.loadMedicines();
-          this.closeModal();
+          this.closeAddModal();
         },
         error: (err) => alert('Error adding medicine')
       });
