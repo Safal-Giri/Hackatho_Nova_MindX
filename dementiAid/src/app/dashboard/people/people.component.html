@@ -14,18 +14,18 @@
           <span>🔄 {{ person.visitFrequency }}</span>
         </div>
         <div class="actions">
-          <button class="edit-btn">Edit</button>
+          <button class="edit-btn" (click)="openEditModal(person)">Edit</button>
           <button class="delete-btn" (click)="deletePerson(person._id || '')">Delete</button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Add Person Modal -->
+  <!-- Add/Edit Person Modal -->
   <div class="modal" *ngIf="showAddModal">
     <div class="modal-content large">
       <span class="close" (click)="closeAddModal()">&times;</span>
-      <h3>Register New Person</h3>
+      <h3>{{ isEditing ? 'Edit Person' : 'Register New Person' }}</h3>
 
       <form (ngSubmit)="onSubmit()">
         <div class="form-group">
@@ -45,15 +45,17 @@
             placeholder="e.g. Every Evening">
         </div>
 
-        <!-- Camera Section -->
-        <div class="camera-section">
+        <!-- Camera Section (Only for registration) -->
+        <div class="camera-section" *ngIf="!isEditing">
           <video #video width="400" height="300" autoplay muted></video>
           <canvas #canvas class="hidden"></canvas>
+          <p class="hint">Your face will be captured automatically when you register.</p>
         </div>
 
-        <button type="submit" class="submit-btn">Register Person</button>
+        <button type="submit" class="submit-btn">{{ isEditing ? 'Save Changes' : 'Register Person' }}</button>
       </form>
     </div>
   </div>
+
 
 </div>

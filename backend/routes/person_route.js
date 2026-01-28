@@ -9,5 +9,7 @@ router.post('/register', personController.registerPerson);
 router.get('/people', personController.getAllPersons);
 
 router.delete('/deleteperson/:id', personController.deletePerson)
+router.put('/people/:id', personController.updatePerson)
 
 module.exports = router;
+

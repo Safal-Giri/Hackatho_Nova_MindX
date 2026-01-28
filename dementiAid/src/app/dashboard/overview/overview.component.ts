@@ -43,6 +43,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
   isRecording = false;
   activePersonId: string | null = null;
   currentTranscript = '';
+  liveTranscript = ''; // For real-time display
   lastSeenTime = 0;
   private readonly SESSION_TIMEOUT = 10000; // 10 seconds of absence to end session
 
@@ -60,15 +61,29 @@ export class OverviewComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.isRecording = false; // Prevent STT from restarting
     if (this.detectionIntervalId) clearInterval(this.detectionIntervalId);
-    if (this.recognition) this.recognition.stop();
+
+    if (this.recognition) {
+      try {
+        this.recognition.abort(); // Stop microphone immediately
+      } catch (e) {
+        console.error('Error stopping recognition:', e);
+      }
+    }
 
     const video = this.videoRef?.nativeElement;
     if (video?.srcObject) {
       const tracks = (video.srcObject as MediaStream).getTracks();
-      tracks.forEach(track => track.stop());
+      tracks.forEach(track => track.stop()); // Stop camera
+      video.srcObject = null;
+    }
+
+    if (window.speechSynthesis) {
+      window.speechSynthesis.cancel(); // Stop any voice announcements
     }
   }
+
 
   initSTT() {
     if ('webkitSpeechRecognition' in window) {
@@ -86,8 +101,9 @@ export class OverviewComponent implements OnInit, OnDestroy {
             interimTranscript += event.results[i][0].transcript;
           }
         }
-        console.log('Transcript update:', this.currentTranscript + interimTranscript);
+        this.liveTranscript = this.currentTranscript + interimTranscript;
       };
+
 
       this.recognition.onend = () => {
         if (this.isRecording) {
@@ -231,7 +247,9 @@ export class OverviewComponent implements OnInit, OnDestroy {
       // Start new session
       this.activePersonId = person._id!;
       this.currentTranscript = '';
+      this.liveTranscript = '';
       this.lastSeenTime = Date.now();
+
       this.startRecording();
     } else if (this.activePersonId === person._id) {
       // Update last seen
@@ -254,9 +272,11 @@ export class OverviewComponent implements OnInit, OnDestroy {
 
     // Reset state
     this.isRecording = false;
-    if (this.recognition) try { this.recognition.stop(); } catch (e) { }
+    if (this.recognition) try { this.recognition.abort(); } catch (e) { } // Use abort to clear buffers
     this.activePersonId = null;
     this.currentTranscript = '';
+    this.liveTranscript = '';
+
 
     if (transcript && personId) {
       this.aiService.summarizeTranscript(transcript).subscribe({

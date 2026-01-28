@@ -72,8 +72,20 @@
           </div>
         </div>
       </div>
+
+      <!-- Live Transcript Panel -->
+      <div class="transcript-panel" *ngIf="isRecording && liveTranscript">
+        <div class="panel-header">
+          <span class="live-dot"></span>
+          LIVE TRANSCRIPT
+        </div>
+        <div class="transcript-content">
+          "{{ liveTranscript }}"
+        </div>
+      </div>
     </div>
   </div>
+
 
 
   <!-- Detected Faces Info -->

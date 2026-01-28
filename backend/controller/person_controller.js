@@ -3,7 +3,7 @@ const Person = require('../models/person_model');
 // Register or add new face descriptor
 exports.registerPerson = async (req, res) => {
   try {
-    const { name, relationship, faceDescriptor } = req.body;
+    const { name, relationship, faceDescriptor, visitFrequency } = req.body;
 
     if (!name || !faceDescriptor) {
       return res.status(400).json({
@@ -15,11 +15,16 @@ exports.registerPerson = async (req, res) => {
     // Ensure descriptor is array
     const descArray = Array.from(faceDescriptor);
 
-    let person = await Person.findOne({ name });
+    // Case-insensitive check for existing person
+    let person = await Person.findOne({ name: { $regex: new RegExp(`^${name}$`, 'i') } });
 
     if (person) {
       // Add new face descriptor to existing person
       person.faceDescriptors.push(descArray);
+      // Update relationship/frequency if provided and different
+      if (relationship) person.relationship = relationship;
+      if (visitFrequency) person.visitFrequency = visitFrequency;
+
       await person.save();
 
       return res.json({
@@ -33,6 +38,7 @@ exports.registerPerson = async (req, res) => {
     person = new Person({
       name,
       relationship,
+      visitFrequency,
       faceDescriptors: [descArray]
     });
 
@@ -45,6 +51,12 @@ exports.registerPerson = async (req, res) => {
     });
 
   } catch (err) {
+    if (err.code === 11000) {
+      return res.status(400).json({
+        status: 'failed',
+        message: 'A person with this name already exists.'
+      });
+    }
     console.error('Error registering person:', err);
     res.status(500).json({
       status: 'error',
@@ -52,6 +64,7 @@ exports.registerPerson = async (req, res) => {
     });
   }
 };
+
 
 // Get all persons
 exports.getAllPersons = async (req, res) => {
@@ -96,3 +109,43 @@ exports.deletePerson = async (req, res) => {
     res.status(500).json({ status: 'error', message: 'Server error' });
   }
 };
+
+exports.updatePerson = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, relationship, visitFrequency } = req.body;
+
+    const person = await Person.findByIdAndUpdate(
+      id,
+      { name, relationship, visitFrequency },
+      { new: true }
+    );
+
+    if (!person) {
+      return res.status(404).json({
+        status: 'failed',
+        message: 'Person not found'
+      });
+    }
+
+    res.json({
+      status: 'success',
+      message: 'Person updated successfully',
+      data: person
+    });
+
+  } catch (err) {
+    if (err.code === 11000) {
+      return res.status(400).json({
+        status: 'failed',
+        message: 'A person with this name already exists.'
+      });
+    }
+    console.error('Error updating person:', err);
+    res.status(500).json({
+      status: 'error',
+      message: 'Server error'
+    });
+  }
+};
+
