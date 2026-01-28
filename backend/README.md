@@ -1,10 +1,10 @@
-# DementiAid Backend ⚙️
+# DementiAid Backend 
 
 The DementiAid backend is a Node.js/Express server that serves as the brain of the application. It handles secure data management, AI-driven summarization, and automated notifications.
 
 ---
 
-## 🛠️ Features
+##  Features
 
 - **Authentication**: Secure registration and login using JWT and Bcryptjs.
 - **AI Processing**: Integration with Google Gemini Pro for summarizing transcribed conversations.
@@ -14,7 +14,7 @@ The DementiAid backend is a Node.js/Express server that serves as the brain of t
 
 ---
 
-## 📂 Project Structure
+##  Project Structure
 
 - `controller/`: Request handlers for each resource (Auth, AI, People, Conversations, Medicines).
 - `models/`: Mongoose schemas for MongoDB.
@@ -24,7 +24,7 @@ The DementiAid backend is a Node.js/Express server that serves as the brain of t
 
 ---
 
-## 🔑 Environment Variables
+##  Environment Variables
 
 Create a `.env` file in the `backend/` directory with the following keys:
 
@@ -42,7 +42,7 @@ EMAIL_PASS=your_app_password
 
 ---
 
-## 🚀 API Endpoints
+##  API Endpoints
 
 ### Authentication
 - `POST /api/user/register`: Create a new caregiver account.
@@ -69,9 +69,9 @@ EMAIL_PASS=your_app_password
 
 ---
 
-## 🏃 Getting Started
+##  Getting Started
 
 1. Install dependencies: `npm install`
 2. Configure your `.env` file.
-3. Run in development mode: `npm run dev`
-4. Production start: `npm start`
+3. Run in development mode: `node ./server.js`
+4. Production start: `pm2 start server.js`
