@@ -9,12 +9,15 @@ import { ActivityLogComponent } from './dashboard/activity-log/activity-log.comp
 import { DevicesComponent } from './dashboard/devices/devices.component';
 import { SettingsComponent } from './dashboard/settings/settings.component';
 
+import { authGuard } from './services/auth.guard';
+
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   {
     path: 'dashboard',
     component: DashboardComponent,
+    canActivate: [authGuard],
     children: [
       { path: 'overview', component: OverviewComponent },
       { path: 'people', component: PeopleComponent },
@@ -27,3 +30,4 @@ export const routes: Routes = [
   },
   { path: '', redirectTo: '/login', pathMatch: 'full' }
 ];
+

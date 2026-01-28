@@ -26,8 +26,9 @@ export class LoginComponent {
           alert('Login Successful');
           localStorage.setItem('token', res.token)
           console.log(res);
-          //   this.router.navigate(['/dashboard']); // Update this when dashboard exists
+          this.router.navigate(['/dashboard/overview']);
         },
+
         error: (err: any) => {
           alert('Login Failed: ' + (err.error?.message || 'Unknown error'));
         }

@@ -75,41 +75,272 @@
   color: #2c3e50;
 }
 
-/* Live Feed Section */
+/* Futuristic HUD Section */
 .live-feed-section {
-  background: white;
-  padding: 1.5rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  background: #0a0a0f;
+  border: 1px solid #1a1a2e;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 0 30px rgba(0, 242, 255, 0.1);
+  position: relative;
+  overflow: hidden;
 }
 
-.live-feed-section h2 {
-  margin: 0 0 1rem;
-  color: #2c3e50;
+.header-with-status {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.header-with-status h2 {
+  color: #00f2ff;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin: 0;
+  font-size: 1.2rem;
+  text-shadow: 0 0 10px rgba(0, 242, 255, 0.5);
+}
+
+.system-status {
+  color: #00f2ff;
+  font-size: 0.8rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  letter-spacing: 1px;
+}
+
+.status-pulse {
+  width: 8px;
+  height: 8px;
+  background: #00f2ff;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #00f2ff;
+  animation: pulse 1s infinite;
 }
 
 .live-feed {
   position: relative;
-  width: 100%;
-  max-width: 720px;
-  margin: 0 auto;
-  background: #000;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border: 2px solid #00f2ff33;
+  border-radius: 4px;
 }
 
-.live-feed video,
-.live-feed canvas {
-  width: 100%;
-  height: auto;
+video {
   display: block;
+  width: 100%;
+  filter: saturate(1.2) contrast(1.1);
 }
 
-.live-feed canvas {
+canvas {
   position: absolute;
   top: 0;
   left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* HUD Overlay */
+.hud-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.scanline {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: rgba(0, 242, 255, 0.2);
+  box-shadow: 0 0 10px rgba(0, 242, 255, 0.5);
+  animation: scan 4s linear infinite;
+  z-index: 20;
+}
+
+.hud-target {
+  position: absolute;
+  border: 1px solid rgba(0, 242, 255, 0.4);
+  background: rgba(0, 242, 255, 0.05);
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: inset 0 0 15px rgba(0, 242, 255, 0.1);
+}
+
+.corner {
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  border: 2px solid #00f2ff;
+}
+
+.tl {
+  top: -2px;
+  left: -2px;
+  border-right: none;
+  border-bottom: none;
+}
+
+.tr {
+  top: -2px;
+  right: -2px;
+  border-left: none;
+  border-bottom: none;
+}
+
+.bl {
+  bottom: -2px;
+  left: -2px;
+  border-right: none;
+  border-top: none;
+}
+
+.br {
+  bottom: -2px;
+  right: -2px;
+  border-left: none;
+  border-top: none;
+}
+
+.target-info {
+  position: absolute;
+  left: calc(100% + 20px);
+  top: 0;
+  width: 250px;
+  color: #00f2ff;
+  animation: slideIn 0.3s ease-out;
+}
+
+.target-info.unknown {
+  color: #ff00ff;
+}
+
+.target-info.unknown .label-line,
+.target-info.unknown .info-content,
+.target-info.unknown .corner {
+  border-color: #ff00ff;
+  color: #ff00ff;
+}
+
+.label-line {
+  position: absolute;
+  left: -20px;
+  top: 20px;
+  width: 20px;
+  height: 1px;
+  background: currentColor;
+}
+
+.info-content {
+  background: rgba(10, 10, 15, 0.8);
+  border: 1px solid currentColor;
+  padding: 0.8rem;
+  backdrop-filter: blur(8px);
+  font-family: 'Roboto Mono', monospace;
+  font-size: 0.75rem;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.id-tag {
+  font-weight: bold;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 0.3rem;
+  margin-bottom: 0.5rem;
+  letter-spacing: 1px;
+}
+
+.relation {
+  margin-bottom: 0.8rem;
+  opacity: 0.8;
+}
+
+.memory-stream {
+  border-top: 1px dashed currentColor;
+  padding-top: 0.5rem;
+}
+
+.stream-header {
+  font-size: 0.6rem;
+  opacity: 0.6;
+  margin-bottom: 0.3rem;
+}
+
+.stream-content {
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+.stt-status {
+  margin-top: 0.8rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: #ff4757;
+}
+
+.recording-dot {
+  width: 6px;
+  height: 6px;
+  background: #ff4757;
+  border-radius: 50%;
+  animation: blink 0.5s infinite alternate;
+}
+
+@keyframes scan {
+  0% {
+    top: 0;
+  }
+
+  100% {
+    top: 100%;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes blink {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0.3;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  50% {
+    transform: scale(1.2);
+    opacity: 0.6;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 /* Detected Faces Container */
@@ -142,6 +373,11 @@
   margin-bottom: 1rem;
 }
 
+.header-main {
+  display: flex;
+  flex-direction: column;
+}
+
 .face-header h2 {
   margin: 0;
   font-size: 2rem;
@@ -150,12 +386,41 @@
 
 .relationship-badge {
   background: rgba(255, 255, 255, 0.3);
-  padding: 0.5rem 1rem;
+  padding: 0.25rem 0.75rem;
   border-radius: 20px;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   font-weight: bold;
   backdrop-filter: blur(5px);
+  width: fit-content;
+  margin-top: 0.25rem;
 }
+
+.recording-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  backdrop-filter: blur(5px);
+}
+
+.recording-indicator .dot {
+  width: 10px;
+  height: 10px;
+  background-color: #ff4757;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #ff4757;
+  animation: pulse 1.5s infinite;
+}
+
+.recording-indicator .text {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
 
 .face-details {
   display: flex;
@@ -216,6 +481,12 @@
 .no-detections p {
   margin: 0;
   font-size: 1.1rem;
+}
+
+/* Hide original summary cards to focus on HUD */
+.cards-grid,
+.detected-faces-container {
+  display: none;
 }
 
 /* Responsive Design */
@@ -283,5 +554,13 @@
   .live-feed-section,
   .detected-faces-container {
     padding: 1rem;
+  }
+}
+
+@media (max-width: 1024px) {
+  .target-info {
+    left: 0;
+    top: calc(100% + 10px);
+    width: 100%;
   }
 }

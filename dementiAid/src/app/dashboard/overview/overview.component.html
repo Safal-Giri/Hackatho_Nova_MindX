@@ -33,12 +33,48 @@
 
   <!-- Live Feed Section -->
   <div class="live-feed-section">
-    <h2>Live Camera Feed</h2>
-    <div class="live-feed">
+    <div class="header-with-status">
+      <h2>Live Assist View</h2>
+      <div class="system-status">
+        <span class="status-pulse"></span>
+        SYSTEM ACTIVE
+      </div>
+    </div>
+    <div class="live-feed futuristic-hud">
       <video #video width="720" height="560" autoplay muted></video>
       <canvas #canvas width="720" height="560"></canvas>
+
+
+      <!-- Sci-Fi Overlay -->
+      <div class="hud-overlay">
+        <div class="scanline"></div>
+        <div *ngFor="let face of detectedFaces" class="hud-target" [style.left.px]="face.box.x"
+          [style.top.px]="face.box.y" [style.width.px]="face.box.width" [style.height.px]="face.box.height">
+
+          <div class="corner tl"></div>
+          <div class="corner tr"></div>
+          <div class="corner bl"></div>
+          <div class="corner br"></div>
+
+          <div class="target-info" [class.unknown]="face.label === 'unknown'">
+            <div class="label-line"></div>
+            <div class="info-content">
+              <div class="id-tag">SUBJECT ID: {{ face.label | uppercase }}</div>
+              <div class="relation" *ngIf="face.label !== 'unknown'">RELATION: {{ face.relationship | uppercase }}</div>
+              <div class="memory-stream" *ngIf="face.label !== 'unknown'">
+                <div class="stream-header">MEMORY STREAM</div>
+                <div class="stream-content">{{ face.lastConversation }}</div>
+              </div>
+              <div class="stt-status" *ngIf="face.isTranscribing">
+                <span class="recording-dot"></span> ANALYZING AUDIO...
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
+
 
   <!-- Detected Faces Info -->
   <div class="detected-faces-container">
@@ -46,9 +82,16 @@
 
     <div *ngFor="let face of detectedFaces" class="detected-face-card">
       <div class="face-header">
-        <h2>{{ face.label }}</h2>
-        <span class="relationship-badge">{{ face.relationship }}</span>
+        <div class="header-main">
+          <h2>{{ face.label }}</h2>
+          <span class="relationship-badge">{{ face.relationship }}</span>
+        </div>
+        <div class="recording-indicator" *ngIf="face.isTranscribing">
+          <span class="dot"></span>
+          <span class="text">Listening...</span>
+        </div>
       </div>
+
 
       <div class="face-details">
         <div class="detail-item">

@@ -4,6 +4,7 @@ const connectDB = require("./config/mongodb");
 const authRoute = require('./routes/user_route');
 const personRoute = require('./routes/person_route')
 const conversationRoute = require('./routes/conversation_route')
+const aiRoute = require('./routes/ai_route')
 const cors = require('cors');
 const app = express();
 app.use(express.json());
@@ -14,6 +15,8 @@ app.use(cors())
 app.use(personRoute)
 app.use(authRoute)
 app.use(conversationRoute)
+app.use(aiRoute)
+
 
 // Connect to MongoDB
 connectDB();

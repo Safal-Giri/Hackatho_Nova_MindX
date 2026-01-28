@@ -28,7 +28,12 @@ export class ConversationService {
     return this.http.post(`${this.apiUrl}/conversations`, data);
   }
 
+  getUserConversations(): Observable<Conversation[]> {
+    return this.http.get<Conversation[]>(`${this.apiUrl}/conversations/user`);
+  }
+
   getAllConversations(personId: string): Observable<Conversation[]> {
     return this.http.get<Conversation[]>(`${this.apiUrl}/conversations/person/${personId}`);
   }
 }
+
