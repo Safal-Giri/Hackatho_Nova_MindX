@@ -8,6 +8,7 @@ import { MemoriesComponent } from './dashboard/memories/memories.component';
 import { ActivityLogComponent } from './dashboard/activity-log/activity-log.component';
 import { DevicesComponent } from './dashboard/devices/devices.component';
 import { SettingsComponent } from './dashboard/settings/settings.component';
+import { MedicationsComponent } from './dashboard/medications/medications.component';
 
 import { authGuard } from './services/auth.guard';
 
@@ -25,6 +26,7 @@ export const routes: Routes = [
       { path: 'activity-log', component: ActivityLogComponent },
       { path: 'devices', component: DevicesComponent },
       { path: 'settings', component: SettingsComponent },
+      { path: 'medications', component: MedicationsComponent },
       { path: '', redirectTo: 'overview', pathMatch: 'full' }
     ]
   },

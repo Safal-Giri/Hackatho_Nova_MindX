@@ -17,6 +17,8 @@ export class PeopleComponent implements OnInit, OnDestroy {
   @ViewChild('video') videoRef!: ElementRef<HTMLVideoElement>;
   @ViewChild('canvas') canvasRef!: ElementRef<HTMLCanvasElement>;
 
+  private cameraStream: MediaStream | null = null;
+
   people: Person[] = [];
   showAddModal: boolean = false;
   isEditing: boolean = false;
@@ -102,17 +104,17 @@ export class PeopleComponent implements OnInit, OnDestroy {
   }
 
   async startCamera() {
-    const stream = await navigator.mediaDevices.getUserMedia({ video: {} });
-    this.videoRef.nativeElement.srcObject = stream;
+    this.cameraStream = await navigator.mediaDevices.getUserMedia({ video: {} });
+    this.videoRef.nativeElement.srcObject = this.cameraStream;
   }
 
   stopCamera() {
-    const video = this.videoRef?.nativeElement;
-    if (video?.srcObject) {
-      const tracks = (video.srcObject as MediaStream).getTracks();
-      tracks.forEach(track => track.stop());
+    if (this.cameraStream) {
+      this.cameraStream.getTracks().forEach(track => track.stop());
+      this.cameraStream = null;
     }
   }
+
 
 
   resetForm() {

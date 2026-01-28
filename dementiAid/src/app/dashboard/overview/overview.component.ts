@@ -19,6 +19,8 @@ export class OverviewComponent implements OnInit, OnDestroy {
   @ViewChild('video') videoRef!: ElementRef<HTMLVideoElement>;
   @ViewChild('canvas') canvasRef!: ElementRef<HTMLCanvasElement>;
 
+  private cameraStream: MediaStream | null = null;
+
   people: Person[] = [];
   labeledDescriptors: faceapi.LabeledFaceDescriptors[] = [];
   faceMatcher: faceapi.FaceMatcher | null = null;
@@ -72,17 +74,16 @@ export class OverviewComponent implements OnInit, OnDestroy {
       }
     }
 
-    const video = this.videoRef?.nativeElement;
-    if (video?.srcObject) {
-      const tracks = (video.srcObject as MediaStream).getTracks();
-      tracks.forEach(track => track.stop()); // Stop camera
-      video.srcObject = null;
+    if (this.cameraStream) {
+      this.cameraStream.getTracks().forEach(track => track.stop()); // Stop all camera tracks
+      this.cameraStream = null;
     }
 
     if (window.speechSynthesis) {
       window.speechSynthesis.cancel(); // Stop any voice announcements
     }
   }
+
 
 
   initSTT() {
@@ -162,9 +163,9 @@ export class OverviewComponent implements OnInit, OnDestroy {
 
   async startCamera() {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: {} });
+      this.cameraStream = await navigator.mediaDevices.getUserMedia({ video: {} });
       const video = this.videoRef.nativeElement;
-      video.srcObject = stream;
+      video.srcObject = this.cameraStream;
       video.onloadedmetadata = () => {
         video.play();
         this.runDetectionLoop();
@@ -173,6 +174,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
       console.error('Error accessing camera:', err);
     }
   }
+
 
   runDetectionLoop() {
     const video = this.videoRef.nativeElement;

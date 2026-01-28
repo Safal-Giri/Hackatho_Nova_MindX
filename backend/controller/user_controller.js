@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken')
 const User = require('../models/user_model')
 
 exports.UserRegister = async (req, res) => {
-console.log("hello")
+  console.log("hello")
   try {
     const { username, email, age, password, phoneNo } = req.body
     console.log(req.body)
@@ -68,7 +68,7 @@ exports.UserLogin = async (req, res) => {
     }
     // create token
     const token = jwt.sign(
-      { username: user.username },
+      { _id: user._id, username: user.username },
       process.env.JWT_SECRET,
       { expiresIn: '3d' }
     )

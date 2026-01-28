@@ -1,0 +1,71 @@
+<div class="medications-container">
+  <div class="header">
+    <h1>Medication Station</h1>
+    <button class="add-btn" (click)="openAddModal()">+ Add Schedule</button>
+  </div>
+
+  <div class="meds-grid" *ngIf="medicines.length > 0; else noMeds">
+    <div class="med-card" *ngFor="let med of medicines">
+      <div class="med-info">
+        <div class="med-icon">💊</div>
+        <div class="details">
+          <h3>{{ med.name }}</h3>
+          <p class="dose">{{ med.dose }}</p>
+          <div class="timing">
+            <span class="badge">{{ med.schedule }}</span>
+            <span class="time">⏰ {{ med.time }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="actions">
+        <button class="edit-btn" (click)="openEditModal(med)">Edit</button>
+        <button class="delete-btn" (click)="deleteMed(med._id || '')">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #noMeds>
+    <div class="empty-state">
+      <p>No medication schedules set yet.</p>
+      <button class="add-btn" (click)="openAddModal()">Add Your First Medication</button>
+    </div>
+  </ng-template>
+
+  <!-- Modal -->
+  <div class="modal" *ngIf="showModal">
+    <div class="modal-content">
+      <span class="close" (click)="closeModal()">&times;</span>
+      <h2>{{ isEditing ? 'Edit Schedule' : 'New Medication' }}</h2>
+
+      <form (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label>Medicine Name</label>
+          <input type="text" [(ngModel)]="newMed.name" name="name" required placeholder="e.g. Donepezil">
+        </div>
+
+        <div class="form-group">
+          <label>Dose</label>
+          <input type="text" [(ngModel)]="newMed.dose" name="dose" required placeholder="e.g. 10mg Tablet">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Frequency</label>
+            <select [(ngModel)]="newMed.schedule" name="schedule">
+              <option value="Daily">Daily</option>
+              <option value="Weekly">Weekly</option>
+              <option value="Morning">Morning</option>
+              <option value="Evening">Evening</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Time</label>
+            <input type="time" [(ngModel)]="newMed.time" name="time" required>
+          </div>
+        </div>
+
+        <button type="submit" class="submit-btn">{{ isEditing ? 'Save Changes' : 'Create Schedule' }}</button>
+      </form>
+    </div>
+  </div>
+</div>

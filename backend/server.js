@@ -5,9 +5,14 @@ const authRoute = require('./routes/user_route');
 const personRoute = require('./routes/person_route')
 const conversationRoute = require('./routes/conversation_route')
 const aiRoute = require('./routes/ai_route')
+const medicineRoute = require('./routes/medicine_route')
+const { startNotificationJob } = require('./services/notification_service')
 const cors = require('cors');
 const app = express();
 app.use(express.json());
+
+// Start Notification Engine
+startNotificationJob();
 
 //cors
 app.use(cors())
@@ -16,6 +21,7 @@ app.use(personRoute)
 app.use(authRoute)
 app.use(conversationRoute)
 app.use(aiRoute)
+app.use(medicineRoute)
 
 
 // Connect to MongoDB
