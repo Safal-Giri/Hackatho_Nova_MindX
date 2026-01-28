@@ -6,33 +6,40 @@
 
   <div *ngIf="loading" class="loading-state">
     <div class="spinner"></div>
-    <p>Loading memories...</p>
+    <p>Loading your precious memories...</p>
   </div>
 
   <div *ngIf="error" class="error-state">
     <p>{{ error }}</p>
-    <button (click)="fetchMemories()">Try Again</button>
+    <button (click)="fetchMemories()" class="retry-btn">Try Again</button>
   </div>
 
   <div *ngIf="!loading && !error" class="memories-grid">
     <div *ngIf="conversations.length === 0" class="empty-state">
-      <p>No memories found. Start a conversation to see it here!</p>
+      <p>No memories found. Conversations you have with known faces will appear here once summarized.</p>
     </div>
 
     @for (conv of conversations; track conv._id) {
     <div class="memory-card">
       <div class="card-header">
         <div class="person-info">
-          <span class="person-name">{{ conv.personId?.name || 'Unknown Person' }}</span>
-          <span class="date">{{ formatDate(conv.createdAt) }}</span>
+          <div class="person-link">
+            <span class="person-name">{{ conv.personId?.name || 'Unknown Person' }}</span>
+          </div>
+          <span class="date-badge">
+            <i>📅</i> {{ formatDate(conv.createdAt) }}
+          </span>
         </div>
-        <div class="user-badge">{{ conv.username }}</div>
+        <div class="user-badge">by {{ conv.username }}</div>
       </div>
       <div class="card-body">
-        <p class="summary">{{ conv.summary }}</p>
+        <div class="summary-box">
+          <span class="quote-icon">“</span>
+          <p>{{ conv.summary }}</p>
+        </div>
       </div>
       <div class="card-footer">
-        <span class="tag">AI Summarized</span>
+        <span class="tag-ai">AI Analyzed</span>
       </div>
     </div>
     }

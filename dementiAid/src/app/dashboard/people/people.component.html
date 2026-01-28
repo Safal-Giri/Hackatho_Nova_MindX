@@ -1,21 +1,36 @@
 <div class="people-container">
   <div class="header">
-    <h2>Manage People</h2>
-    <button class="add-btn" (click)="openAddModal()">+ Add New Person</button>
+    <div class="header-text">
+      <h2>Known Faces</h2>
+      <p>People recognized by your DementiAid system</p>
+    </div>
+    <button (click)="openAddModal()" class="add-btn">
+      <i>+</i> Register Person
+    </button>
   </div>
 
   <div class="people-grid">
-    <div class="person-card" *ngFor="let person of people">
+    <div *ngFor="let person of people" class="person-card">
+      <div class="person-img" [style.backgroundImage]="'url(' + (person.image || 'assets/default-avatar.png') + ')'">
+        <div class="img-overlay">
+          <span class="relationship-badge">{{ person.relationship }}</span>
+        </div>
+      </div>
       <div class="person-info">
-        <h3>{{ person.name }}</h3>
-        <p class="role">{{ person.relationship }}</p>
+        <div class="info-header">
+          <h3>{{ person.name }}</h3>
+        </div>
         <div class="details">
-          <span>📅 {{ person.createdAt | date:'mediumDate' }}</span>
-          <span>🔄 {{ person.visitFrequency }}</span>
+          <div class="detail-item">
+            <i>🕒</i> Frequency: {{ person.visitFrequency || 'Unknown' }}
+          </div>
+          <div class="detail-item">
+            <i>📅</i> Added: {{ person.createdAt | date:'longDate' }}
+          </div>
         </div>
         <div class="actions">
-          <button class="edit-btn" (click)="openEditModal(person)">Edit</button>
-          <button class="delete-btn" (click)="deletePerson(person._id || '')">Delete</button>
+          <button (click)="openEditModal(person)" class="edit-btn">Edit Details</button>
+          <button (click)="deletePerson(person._id || '')" class="delete-btn">Remove</button>
         </div>
       </div>
     </div>
@@ -25,37 +40,35 @@
   <div class="modal" *ngIf="showAddModal">
     <div class="modal-content large">
       <span class="close" (click)="closeAddModal()">&times;</span>
-      <h3>{{ isEditing ? 'Edit Person' : 'Register New Person' }}</h3>
+      <div class="modal-header">
+        <h2>{{ isEditing ? 'Update Profile' : 'New Registration' }}</h2>
+      </div>
 
       <form (ngSubmit)="onSubmit()">
         <div class="form-group">
           <label>Full Name</label>
-          <input type="text" [(ngModel)]="newPerson.name" name="name" required placeholder="e.g. Maya Smith">
+          <input type="text" [(ngModel)]="newPerson.name" name="name" required placeholder="Full Name">
         </div>
 
         <div class="form-group">
           <label>Relationship</label>
           <input type="text" [(ngModel)]="newPerson.relationship" name="relationship" required
-            placeholder="e.g. Daughter">
+            placeholder="Relationship">
         </div>
 
         <div class="form-group">
-          <label>Visit Frequency (Optional)</label>
+          <label>Visit Frequency</label>
           <input type="text" [(ngModel)]="newPerson.visitFrequency" name="visitFrequency"
-            placeholder="e.g. Every Evening">
+            placeholder="e.g. Daily, Weekly">
         </div>
 
-        <!-- Camera Section (Only for registration) -->
         <div class="camera-section" *ngIf="!isEditing">
-          <video #video width="400" height="300" autoplay muted></video>
+          <video #video autoplay muted></video>
           <canvas #canvas class="hidden"></canvas>
-          <p class="hint">Your face will be captured automatically when you register.</p>
         </div>
 
-        <button type="submit" class="submit-btn">{{ isEditing ? 'Save Changes' : 'Register Person' }}</button>
+        <button type="submit" class="submit-btn">{{ isEditing ? 'Save Changes' : 'Complete Registration' }}</button>
       </form>
     </div>
   </div>
-
-
 </div>

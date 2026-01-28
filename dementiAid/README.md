@@ -1,27 +1,69 @@
-# DementiAid
+# DementiAid Frontend 🖥️
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.20.
+The DementiAid frontend is a powerful Angular application that provides a real-time, AI-augmented experience for dementia patients and caregivers.
 
-## Development server
+---
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## 🛠️ Features
 
-## Code scaffolding
+### 📡 Real-Time HUD (Heads-Up Display)
+- **Face Recognition**: Detects and recognizes registered faces in real-time using `face-api.js`.
+- **Dynamic Overlays**: Displays subject name, relationship, and the most recent conversation memory as an interactive sci-fi overlay on the camera feed.
+- **Auto-Summarization**: Detects speech and automatically triggers the backend AI to summarize conversations.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+### 👥 People Management
+- **Subject Directory**: View and manage all people recognized by the system.
+- **Registration**: Capture subject faces via webcam for future recognition.
+- **Relationship Data**: Store visit frequency and relationship status.
 
-## Build
+### 🧠 Memories
+- **Conversation Logs**: Revisit summarized conversations to help the patient recall shared moments.
+- **AI-Driven Summaries**: Uses Google Gemini to distill long conversations into readable, high-impact memories.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+### 💊 Medication Station
+- **Caregiver Dashboard**: Manage medication dosages, frequencies, and precise timings.
+- **Automated Alerts**: Syncs with the backend to trigger caregiver email notifications.
 
-## Running unit tests
+---
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## 🏗️ Technical Details
 
-## Running end-to-end tests
+- **Framework**: Angular 18 (Standalone Components)
+- **Styling**: Vanilla CSS3 with a custom, premium design system.
+- **Computer Vision**: `face-api.js` (TensorFlow.js based) for real-time detection and recognition.
+- **Routing**: Functional guards (`AuthGuard`) protect all dashboard routes.
+- **Interceptors**: `AuthInterceptor` automatically attaches JWT tokens to outgoing API requests.
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+---
 
-## Further help
+## 📂 Navigation structure
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- `/login`: Secure caregiver sign-in.
+- `/register`: New caregiver registration.
+- `/dashboard/overview`: The live AI HUD interface.
+- `/dashboard/people`: Subject directory and face registration.
+- `/dashboard/memories`: Historical conversation summaries.
+- `/dashboard/medications`: Medication schedule management.
+
+---
+
+## 🚀 Getting Started
+
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
+2. Start the development server:
+   ```bash
+   npm start
+   ```
+3. Access the application at `http://localhost:4200`.
+
+---
+
+## 🎨 Design System
+
+The application uses a custom-built, premium design system defined in `src/styles.css`. 
+- **Typography**: Inter (Body), Outfit (Headings)
+- **Colors**: Premium Slate (#0f172a) and Indigo (#4f46e5)
+- **Responsive**: Fully optimized for Desktop, Tablet, and Mobile (collapsible sidebar).

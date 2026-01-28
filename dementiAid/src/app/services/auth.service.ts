@@ -23,5 +23,17 @@ export class AuthService {
   isLoggedIn(): boolean {
     return !!localStorage.getItem('token');
   }
+
+  getUserName(): string {
+    const token = localStorage.getItem('token');
+    if (!token) return 'Guest';
+    try {
+      const payload = token.split('.')[1];
+      const decoded = JSON.parse(atob(payload));
+      return decoded.username || 'User';
+    } catch (e) {
+      return 'User';
+    }
+  }
 }
 
